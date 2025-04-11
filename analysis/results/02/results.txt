@@ -1,0 +1,1 @@
+optuna_logs/trial_2/version_2/checkpoints/best_ae_trial_2.ckpt
