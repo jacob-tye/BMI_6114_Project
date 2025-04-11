@@ -1,1 +1,3 @@
 data/nsclc_tcga_broad_2016/
+analysis/logs/
+analysis/optuna_logs/
