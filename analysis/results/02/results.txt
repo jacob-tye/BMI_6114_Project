@@ -1,1 +1,1 @@
-logs/trial_17/version_0/checkpoints/best_trial_17.ckpt
+logs/trial_46/version_1/checkpoints/best_trial_46.ckpt
