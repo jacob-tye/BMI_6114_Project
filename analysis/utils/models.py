@@ -21,6 +21,8 @@ class CancerDataAutoEncoder(L.LightningModule):
 
         self.loss_metric = MeanSquaredError()
         self.val_metric = MeanSquaredError()
+        self.test_metric = MeanSquaredError()
+
 
     def _create_encoder(self, input_size, latent_size, n_layers, dropout):
         layers = []
@@ -87,6 +89,18 @@ class CancerDataAutoEncoder(L.LightningModule):
     def on_validation_epoch_end(self):
         self.log("val_mse_epoch", self.val_metric.compute())
         self.val_metric.reset()
+
+    def test_step(self, batch, batch_idx):
+        x, _ = batch
+        x_hat = self(x)
+        loss = nn.functional.mse_loss(x_hat, x)
+        self.log("test_loss", loss, prog_bar=True)
+        self.log("test_mse", self.test_metric(x_hat, x), prog_bar=True)
+        return loss
+    
+    def on_test_epoch_end(self):
+        self.log("test_mse", self.test_metric.compute())
+        self.test_metric.reset()
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=1e-4)
