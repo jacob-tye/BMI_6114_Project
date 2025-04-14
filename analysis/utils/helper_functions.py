@@ -1,7 +1,9 @@
 from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from lightning.pytorch.loggers import CSVLogger, TensorBoardLogger
 import lightning as L
+from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
+import torch
 
 def create_classifier_trainer(name, max_epochs=20, log_every_n_steps=5, enable_pbar=True):
 
@@ -36,3 +38,45 @@ def split_data(df, random_state=42):
     train_df, temp_df = train_test_split(df, test_size=0.4, random_state=random_state)
     val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=random_state)
     return train_df, val_df, test_df
+
+
+def plot_regression_results_torch(model, dataloader):
+    model.eval()
+    y_true = []
+    y_pred = []
+    with torch.no_grad():
+        for batch in dataloader:
+            x, y = batch
+            y_hat = model(x)
+            y_true.append(y)
+            y_pred.append(y_hat)
+
+    y_true = torch.cat(y_true).numpy()
+    y_pred = torch.cat(y_pred).numpy()
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(y_true, y_pred, alpha=0.5)
+    plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], 'r--')
+    plt.xlabel('True Values')
+    plt.ylabel('Predictions')
+    plt.title('Regression Results')
+    plt.show()
+
+def get_features_and_target(data):
+    columns = data.columns.tolist()
+    features = data.iloc[:, :-1].copy()
+    target = data[columns[-1]].values
+    return features, target
+
+def plot_regression_results_sklearn(model, test_data):
+    x, y = get_features_and_target(test_data)
+    y_hat = model.predict(x)
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(y, y_hat, alpha=0.5)
+    plt.plot([y.min(), y.max()], [y.min(), y.max()], 'r--')
+    plt.xlabel('True Values')
+    plt.ylabel('Predictions')
+    plt.title('Regression Results')
+    plt.show()
+
