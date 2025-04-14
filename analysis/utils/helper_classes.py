@@ -12,6 +12,8 @@ from torchmetrics import MeanSquaredError
 from torchvision import datasets
 from sklearn.preprocessing import StandardScaler
 
+from utils.helper_functions import split_data
+
 class CancerDataset(torch.utils.data.Dataset):
     def __init__(self, df):
         columns = df.columns.tolist()
@@ -44,10 +46,9 @@ class CancerDataModule(L.LightningDataModule):
         joblib.dump(self.scaler, path)
 
     def setup(self, stage=None):
-        from sklearn.model_selection import train_test_split
 
-        train_df, temp_df = train_test_split(self.df, test_size=0.4, random_state=self.random_state)
-        val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=self.random_state)
+        train_df, val_df, test_df = split_data(self.df, random_state=self.random_state)
+
         if not hasattr(self.scaler, 'mean_'):
             self.scaler.fit(train_df[self.numerical_features])
         train_df.loc[:, self.numerical_features] = self.scaler.transform(train_df[self.numerical_features])
@@ -62,10 +63,10 @@ class CancerDataModule(L.LightningDataModule):
         self.ds_test = CancerDataset(test_df)
 
     def train_dataloader(self):
-        return DataLoader(self.ds_train, batch_size=32, shuffle=True)
+        return DataLoader(self.ds_train, batch_size=32, shuffle=True, num_workers=15)
 
     def val_dataloader(self):
-        return DataLoader(self.ds_val, batch_size=32)
+        return DataLoader(self.ds_val, batch_size=32, num_workers=15)
 
     def test_dataloader(self):
-        return DataLoader(self.ds_test, batch_size=32)
+        return DataLoader(self.ds_test, batch_size=32, num_workers=15)

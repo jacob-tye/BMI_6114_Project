@@ -1,6 +1,7 @@
 from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from lightning.pytorch.loggers import CSVLogger, TensorBoardLogger
 import lightning as L
+from sklearn.model_selection import train_test_split
 
 def create_classifier_trainer(name, max_epochs=20, log_every_n_steps=5, enable_pbar=True):
 
@@ -29,3 +30,9 @@ def create_classifier_trainer(name, max_epochs=20, log_every_n_steps=5, enable_p
         enable_progress_bar=enable_pbar,
     )
     return trainer, csv_logger, checkpoint
+
+def split_data(df, random_state=42):
+
+    train_df, temp_df = train_test_split(df, test_size=0.4, random_state=random_state)
+    val_df, test_df = train_test_split(temp_df, test_size=0.5, random_state=random_state)
+    return train_df, val_df, test_df

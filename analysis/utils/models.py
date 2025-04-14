@@ -113,6 +113,7 @@ class BaseCancerRegressor(L.LightningModule):
         self.lr = lr
         self.weight_decay = weight_decay
         self.auto_encoder = auto_encoder
+        self.auto_encoder = self.auto_encoder.to(self.device)
         self.auto_encoder.requires_grad_(False)
         for param in self.auto_encoder.parameters():
             param.requires_grad = False
@@ -125,11 +126,13 @@ class BaseCancerRegressor(L.LightningModule):
 
     def forward(self, x):
         x = self.auto_encoder.encoder(x)
-        x = self.neural_network(x)
-        return x
+        y = self.neural_network(x)
+        return y
     
     def training_step(self, batch, batch_idx):
         x, y = batch
+        x = x.to(self.device)
+        y = y.to(self.device)
         y_hat = self(x)
         loss = nn.functional.mse_loss(y_hat, y)
         self.log("train_loss", loss, prog_bar=True)
