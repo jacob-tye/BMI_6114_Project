@@ -107,8 +107,11 @@ class CancerDataAutoEncoder(L.LightningModule):
 
 
 class BaseCancerRegressor(L.LightningModule):
-    def __init__(self, auto_encoder, neural_network):
+    def __init__(self, auto_encoder, neural_network, optimizer=torch.optim.Adam, lr=1e-3, weight_decay=1e-4):
         super().__init__()
+        self.optimizer = optimizer
+        self.lr = lr
+        self.weight_decay = weight_decay
         self.auto_encoder = auto_encoder
         self.auto_encoder.requires_grad_(False)
         for param in self.auto_encoder.parameters():
@@ -150,7 +153,7 @@ class BaseCancerRegressor(L.LightningModule):
         self.val_metric.reset()
         
     def configure_optimizers(self):
-        return torch.optim.Adam(self.neural_network.parameters(), lr=1e-3, weight_decay=1e-4)
+        return self.optimizer(self.neural_network.parameters(), lr=self.lr, weight_decay=self.weight_decay)
     
     def test_step(self, batch, batch_idx):
         x, y = batch
