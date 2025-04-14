@@ -1,1 +1,1 @@
-logs/trial_46/version_1/checkpoints/best_trial_46.ckpt
+results/02/best_model.ckpt
