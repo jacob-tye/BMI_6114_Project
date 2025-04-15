@@ -80,3 +80,21 @@ def plot_regression_results_sklearn(model, test_data):
     plt.title('Regression Results')
     plt.show()
 
+def make_plots(history, title):
+    plt.figure(figsize=(12, 5))
+    plt.suptitle(title)
+    train_history = history.dropna(subset=["train_loss"])
+    val_history = history.dropna(subset=["val_loss"])
+    # Loss Plot
+    plt.plot(train_history["step"], train_history["train_loss"], label="Train Loss", marker="o")
+    plt.plot(
+        val_history["step"],
+        val_history["val_loss"],
+        label="Validation Loss",
+        marker="o",
+        linestyle="-",
+    )
+    plt.xlabel("step")
+    plt.ylabel("Loss")
+    plt.title("Training and Validation Loss")
+    plt.legend()
