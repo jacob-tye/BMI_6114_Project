@@ -1,1 +1,1 @@
-results/02/best_model.ckpt
+results/02/best_model.pth
