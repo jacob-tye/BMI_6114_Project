@@ -63,7 +63,9 @@ class CancerDataModule(L.LightningDataModule):
         test_df.loc[:, self.numerical_features] = self.scaler.transform(test_df[self.numerical_features])
 
         if self.target_scaler is not None:
-            train_df.loc[:, train_df.columns[-1]] = self.target_scaler.fit_transform(train_df[[train_df.columns[-1]]])
+            if not hasattr(self.target_scaler, 'mean_'):
+                self.target_scaler.fit(train_df[[train_df.columns[-1]]])
+            train_df.loc[:, train_df.columns[-1]] = self.target_scaler.transform(train_df[[train_df.columns[-1]]])
             val_df.loc[:, val_df.columns[-1]] = self.target_scaler.transform(val_df[[val_df.columns[-1]]])
             test_df.loc[:, test_df.columns[-1]] = self.target_scaler.transform(test_df[[test_df.columns[-1]]])
 
