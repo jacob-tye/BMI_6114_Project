@@ -32,7 +32,7 @@ class CancerDataset(torch.utils.data.Dataset):
 
 
 class CancerDataModule(L.LightningDataModule):
-    def __init__(self, df, numerical_features=None, random_state=42, scaler=None):
+    def __init__(self, df, numerical_features=None, random_state=42, scaler=None, scale_targets=False, target_scaler=None):
         super().__init__()
         self.random_state = random_state
         self.numerical_features = numerical_features
@@ -41,9 +41,16 @@ class CancerDataModule(L.LightningDataModule):
             self.scaler = scaler
         else:
             self.scaler = StandardScaler()
+        self.scale_targets = scale_targets
+        if scale_targets:
+            self.target_scaler = StandardScaler()
+        else:
+            self.target_scaler = target_scaler
     
     def save_scaler(self, path="results/scaler.pkl"):
         joblib.dump(self.scaler, path)
+        if self.target_scaler is not None:
+            joblib.dump(self.target_scaler, path.replace("scaler", "target_scaler"))
 
     def setup(self, stage=None):
 
@@ -54,6 +61,11 @@ class CancerDataModule(L.LightningDataModule):
         train_df.loc[:, self.numerical_features] = self.scaler.transform(train_df[self.numerical_features])
         val_df.loc[:, self.numerical_features] = self.scaler.transform(val_df[self.numerical_features])
         test_df.loc[:, self.numerical_features] = self.scaler.transform(test_df[self.numerical_features])
+
+        if self.target_scaler is not None:
+            train_df.loc[:, train_df.columns[-1]] = self.target_scaler.fit_transform(train_df[[train_df.columns[-1]]])
+            val_df.loc[:, val_df.columns[-1]] = self.target_scaler.transform(val_df[[val_df.columns[-1]]])
+            test_df.loc[:, test_df.columns[-1]] = self.target_scaler.transform(test_df[[test_df.columns[-1]]])
 
 
         train_dataset = CancerDataset(train_df)
