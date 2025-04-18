@@ -2,6 +2,8 @@ from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from lightning.pytorch.loggers import CSVLogger, TensorBoardLogger
 import lightning as L
 from matplotlib import pyplot as plt
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 import torch
 
@@ -73,9 +75,13 @@ def get_features_and_target(data):
     target = data[columns[-1]].values
     return features, target
 
+
 def plot_regression_results_sklearn(model, test_data):
     x, y = get_features_and_target(test_data)
     y_hat = model.predict(x)
+
+    r2 = r2_score(y, y_hat)
+    mse = mean_squared_error(y, y_hat)
 
     plt.figure(figsize=(10, 6))
     plt.scatter(y, y_hat, alpha=0.5)
@@ -83,6 +89,18 @@ def plot_regression_results_sklearn(model, test_data):
     plt.xlabel('True Values')
     plt.ylabel('Predictions')
     plt.title('Regression Results')
+
+    # Add R² and MSE text in upper left corner
+    plt.text(
+        0.05, 0.95,
+        f'R² = {r2:.3f}\nMSE = {mse:.3f}',
+        transform=plt.gca().transAxes,
+        fontsize=12,
+        verticalalignment='top',
+        bbox=dict(facecolor='white', alpha=0.8, edgecolor='gray')
+    )
+
+    plt.tight_layout()
     plt.show()
 
 def make_plots(history, title):
