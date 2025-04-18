@@ -3,6 +3,7 @@ import lightning as L
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from sklearn.pipeline import FunctionTransformer
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -43,7 +44,7 @@ class CancerDataModule(L.LightningDataModule):
             self.scaler = StandardScaler()
         self.scale_targets = scale_targets
         if scale_targets:
-            self.target_scaler = StandardScaler()
+            self.target_scaler = FunctionTransformer(np.log1p, inverse_func=np.expm1)
         else:
             self.target_scaler = target_scaler
     
