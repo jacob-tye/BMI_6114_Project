@@ -1,5 +1,5 @@
 {
-    "latent_size": 38,
+    "latent_size": 22,
     "n_layers": 2,
-    "dropout": 0.08362845598146633
+    "dropout": 0.013875149619123436
 }
