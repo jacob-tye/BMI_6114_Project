@@ -1,0 +1,9 @@
+{
+    "regressor__gbm__n_estimators": 100,
+    "regressor__gbm__learning_rate": 0.02,
+    "regressor__gbm__max_depth": 25,
+    "regressor__gbm__min_samples_split": 8,
+    "regressor__gbm__min_samples_leaf": 1,
+    "regressor__gbm__subsample": 0.7566995924638414,
+    "regressor__gbm__max_features": "sqrt"
+}
