@@ -76,7 +76,7 @@ def get_features_and_target(data):
     return features, target
 
 
-def plot_regression_results_sklearn(model, test_data):
+def plot_regression_results_sklearn(model, test_data, title="Regression Results"):
     x, y = get_features_and_target(test_data)
     y_hat = model.predict(x)
 
@@ -86,9 +86,10 @@ def plot_regression_results_sklearn(model, test_data):
     plt.figure(figsize=(10, 6))
     plt.scatter(y, y_hat, alpha=0.5)
     plt.plot([y.min(), y.max()], [y.min(), y.max()], 'r--')
-    plt.xlabel('True Values')
+    plt.xlabel('Actual Values')
     plt.ylabel('Predictions')
-    plt.title('Regression Results')
+    plt.title(title)
+    plt.grid(True)
 
     # Add R² and MSE text in upper left corner
     plt.text(
