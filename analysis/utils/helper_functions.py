@@ -5,9 +5,11 @@ from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 import torch
 
-def create_classifier_trainer(name, max_epochs=20, log_every_n_steps=5, enable_pbar=True):
+def create_classifier_trainer(name, max_epochs=20, log_every_n_steps=5, enable_pbar=True, allow_early_stop=True):
 
     csv_logger = CSVLogger("logs", name=name)
+
+    callbacks = []
 
     checkpoint = ModelCheckpoint(
         monitor="val_mse",
@@ -15,19 +17,22 @@ def create_classifier_trainer(name, max_epochs=20, log_every_n_steps=5, enable_p
         save_top_k=1,
         filename=f"best_{name}",
     )
-    early_stop = EarlyStopping(
-        monitor="val_mse",  
-        patience=3,  
-        mode="min",  
+    callbacks.append(checkpoint)
+    if allow_early_stop:
+        early_stop = EarlyStopping(
+            monitor="val_mse",  
+            patience=3,  
+            mode="min",  
 
-    )
+        )
+        callbacks.append(early_stop)
 
     # Trainer
     trainer = L.Trainer(
         max_epochs=max_epochs,
         accelerator="auto",
         logger=[csv_logger],
-        callbacks=[checkpoint, early_stop],
+        callbacks=callbacks,
         log_every_n_steps=log_every_n_steps,
         enable_progress_bar=enable_pbar,
     )
