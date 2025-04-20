@@ -9,7 +9,7 @@ This project explores the application of traditional machine learning and deep l
     ├── 00_data_prep.ipynb              # Preprocessing and feature engineering
     ├── 01_ml_analysis_gbm.ipynb        # Gradient Boosting Models (unscaled and scaled)
     ├── 01_ml_analysis_rf.ipynb         # Random Forest Regressor Models (unscaled)
-    ├── 01_ml_analysis_rf_scaled.ipynb         # Random Forest Regressor Models (scaled)
+    ├── 01_ml_analysis_rf_scaled.ipynb  # Random Forest Regressor Models (scaled)
     ├── 02_autoencoder.ipynb            # Autoencoder for dimensionality reduction
     ├── 03_dl_analysis.ipynb            # Deep learning with autoencoder (unscaled)
     ├── 04_dl_analysis_no_ae.ipynb      # Deep learning without autoencoder (unscaled)
