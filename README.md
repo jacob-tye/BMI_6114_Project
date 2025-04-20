@@ -38,11 +38,14 @@ One-hot encoded + standardized features
 
 ### Modeling Approaches
 
-Category	Models Implemented	Notes
-ML	Random Forest, Gradient Boosting	Hyperparameter tuning via Optuna
-Dimensionality	Autoencoder	Latent compression to reduce feature space
-DL	Feedforward Neural Networks	With/without autoencoder; raw vs log targets
-Experiment Logs	PyTorch Lightning logging to logs/	Models saved with metrics.csv and hparams.yaml per run
+#### Models Implemented
+##### ML
+- Random Forest
+- Gradient Boosting
+Hyperparameter tuning via Optuna
+##### DL
+- Dimensionality Autoencoder
+- DL Feedforward Neural Networks With/without autoencoder; unscaled vs log targets
 
 ### 📊 Results Snapshot
 🟢 Best ML Model: Random Forest on unscaled targets (R² = 0.416)
