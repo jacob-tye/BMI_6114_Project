@@ -17,7 +17,11 @@ This project explores the application of traditional machine learning and deep l
     ├── 06_dl_analysis_no_ae_scaled.ipynb # Deep learning without autoencoder (log-scaled)
     ├── results/                        # Best models and paremeters for use in later steps
     ├── optuna_logs/                    # Optuna logs and checkpoints for hyperparameter tuning
-    └── logs/                           # Lightning logs and checkpoints for all model trials
+    ├── logs/                           # Lightning logs and checkpoints for all model trials
+    └── utils/
+        ├── models.ipynb                # Shared base code for DL models
+        ├── helper_classes.ipynb        # Shared code for Lightning Datasets and Data Modules
+        └── helper_functions.ipynb      # Shared code for plotting, data prep, and data loading
 ```
 ## 🧪 Methods Overview
 ### Data Source
