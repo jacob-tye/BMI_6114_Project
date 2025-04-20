@@ -3,10 +3,7 @@
 This project explores the application of traditional machine learning and deep learning models to predict survival time in lung cancer patients. Using clinical and genomic data from TCGA, we implemented multiple pipelines, including feature preprocessing, dimensionality reduction with autoencoders, and regression modeling using Random Forests, Gradient Boosting, and deep neural networks.
 
 ## 🗂 Project Structure
-bash
-Copy
-Edit
-.
+```
 ├── README.md
 └── analysis/
     ├── 00_data_prep.ipynb              # Preprocessing and feature engineering
@@ -21,7 +18,7 @@ Edit
     ├── results/                        # Best models and paremeters for use in later steps
     ├── optuna_logs/                    # Optuna logs and checkpoints for hyperparameter tuning
     └── logs/                           # Lightning logs and checkpoints for all model trials
-
+```
 ## 🧪 Methods Overview
 ### Data Source
 TCGA LUAD and LUSC samples
