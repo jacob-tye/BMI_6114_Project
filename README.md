@@ -5,6 +5,7 @@ This project explores the application of traditional machine learning and deep l
 ## 🗂 Project Structure
 ```
 ├── README.md
+├── bmi_6114.yaml                       # Yaml file for conda env for project
 └── analysis/
     ├── 00_data_prep.ipynb              # Preprocessing and feature engineering
     ├── 01_ml_analysis_gbm.ipynb        # Gradient Boosting Models (unscaled and scaled)
